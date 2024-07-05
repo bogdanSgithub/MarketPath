@@ -20,5 +20,5 @@ def get_stocks_data(list_name='SP500', start_date=dt.datetime(1950, 1, 1), end_d
 
     df = yf.download(tickers=tickers_lst,
         start=start_date,
-        end=end_date)
+        end=end_date).stack()
     return df
