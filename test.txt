@@ -1,0 +1,103 @@
+yearly_combined = pd.DataFrame()
+N = 4
+for ticker in tickers:
+    try:
+        stock = yf.Ticker(ticker)
+        info = stock.info
+        
+        balance = stock.balance_sheet
+        balance = remove_last_col(balance)
+
+        earnings = stock.income_stmt
+        earnings = remove_last_col(earnings)
+
+        cashflow = stock.cash_flow
+        cashflow = remove_last_col(cashflow)
+
+        start_dates = balance.columns.values
+        end_dates = start_dates + np.timedelta64(366, 'D')
+
+        start_dates = [str(date)[: -19] for date in start_dates]
+        end_dates = [str(date)[: -19] for date in end_dates]
+        
+        year1 = stock.history(start=start_dates[0], end=end_dates[0]).reset_index(drop=True)
+        year2 = stock.history(start=start_dates[1], end=end_dates[1]).reset_index(drop=True)
+        year3 = stock.history(start=start_dates[2], end=end_dates[2]).reset_index(drop=True)
+        year4 = stock.history(start=start_dates[3], end=end_dates[3]).reset_index(drop=True)
+
+        columns = balance.columns.values
+        balance.columns = columns
+        earnings.columns= columns
+        cashflow.columns = columns
+        
+        yearly = pd.concat([balance, earnings, cashflow]).T
+        columns = yearly.columns.values
+        
+        # Liquidity
+        # current ratio = current assets / current liabilities
+        yearly['current_ratio'] = yearly['Current Assets'] / yearly['Current Liabilities']
+        # quick ratio = Inventory + current assets / current liabilities
+        yearly['quick_ratio'] = yearly['Current Assets']
+        if 'Inventory' in columns:
+            yearly['quick_ratio'] += yearly['Inventory']
+        yearly['quick_ratio'] /= yearly['Current Liabilities']
+        # cash ratio = (cash + cash equivalents) / current liabilities
+        yearly['cash_ratio'] = yearly['Cash Cash Equivalents And Short Term Investments'] / yearly['Current Liabilities']
+        yearly['operating_cashflow'] = yearly['Operating Cash Flow']
+        # equity ratio = total equity / total assets
+        yearly['equity_ratio'] = yearly['Stockholders Equity'] / yearly['Total Assets']
+
+        # Leverage
+        # debt to equity = total liabilites / shareholder equity
+        yearly['debt_to_equity'] = yearly['Current Liabilities'] / yearly['Stockholders Equity']
+        # debt to assets = total liabilites / shareholder equity
+        yearly['debt_to_assets'] = yearly['Current Liabilities'] / yearly['Total Assets']
+        # interest coverage = operating income / interest expense
+        yearly['interest_coverage'] = yearly['Operating Income'] / yearly['Interest Expense']
+
+        # Efficiency
+        # asset turnover = revenue / total assets
+        yearly['asset_turnover'] = yearly['Total Revenue'] / yearly['Total Assets']
+        # receivables turnover = revenue / accounts receivables
+        if 'Receivables' in columns: yearly['receivables_turnover'] = yearly['Total Revenue'] / yearly['Receivables']
+        else: yearly['receivables_turnover'] = np.nan
+
+        # Profitability
+        # gross margin = gross profit / revenue
+        yearly['gross_margin'] = yearly['Gross Profit'] / yearly['Total Revenue']
+        # profit margin = net income / revenue
+        yearly['profit_margin'] = yearly['Net Income'] / yearly['Total Revenue']
+        # operating margin = net income / revenue
+        yearly['operating_margin'] = yearly['Operating Income'] / yearly['Total Revenue']
+        # return on equity = net income / shareholder equity
+        yearly['return_on_equity'] = yearly['Net Income'] / yearly['Stockholders Equity']
+        # return on assets = net income / total assets
+        yearly['return_on_assets'] = yearly['Net Income'] / yearly['Total Assets']
+        # eps
+        yearly['eps'] = yearly['Diluted EPS']
+        shareprice = np.array([year1.loc[0, 'Close'], year2.loc[0, 'Close'], year3.loc[0, 'Close'], year4.loc[0, 'Close']])
+        # p/e = shareprice / eps
+        yearly['p/e'] = shareprice / yearly['eps']
+
+        yearly['ticker'] = ticker
+        yearly['sector'] = info['sector']
+        yearly.index = yearly.index.year
+        yearly['year'] = yearly.index.values
+        
+        startprice = np.array([year1.loc[1, 'Open'], year2.loc[1, 'Open'], year3.loc[1, 'Open'], year4.loc[1, 'Open']])
+        endprice = np.array([year1.loc[len(year1)-1, 'Close'], year2.loc[len(year2)-1, 'Close'], year3.loc[len(year3)-1, 'Close'], year4.loc[len(year4)-1, 'Close'],])
+        pctdiff = (endprice-startprice) / startprice
+        yearly['result'] = pctdiff
+                
+        columns = ["current_ratio", "quick_ratio", "cash_ratio", "operating_cashflow", "equity_ratio", "debt_to_equity", "debt_to_assets", "interest_coverage", "asset_turnover", "receivables_turnover", "gross_margin", "profit_margin", "operating_margin", "return_on_equity", "return_on_assets", "eps", "p/e", "ticker", "sector", "year", "result"]
+
+        yearly = yearly[columns].reset_index(drop=True)
+        
+        if yearly_combined.empty:
+            yearly_combined = yearly
+        else:
+            yearly_combined = pd.concat([yearly_combined, yearly]).reset_index(drop=True)
+        
+
+    except Exception as e:
+        print(ticker, e)
