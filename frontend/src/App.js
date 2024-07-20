@@ -1,33 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Plot from "react-plotly.js";
+import React, { useState } from "react";
+import StockContext from "./context/StockContext";
+import Dataplot from "./components/Dataplot";
+import Search from "./components/Search";
 
 const App = () => {
-  const [data, setData] = useState([]);
-  const [ticker, setTicker] = useState("NVDA");
-
-  useEffect(() => {
-    fetch(`/historical_data?stock=${ticker}`)
-      .then((response) => response.json())
-      .then((data) => setData(data));
-  }, []);
-
-  const plotData = data.length
-    ? [
-        {
-          x: data.map((item) => item.Date),
-          y: data.map((item) => item.Close),
-          type: "scatter",
-          mode: "lines+markers",
-          marker: { color: "black" },
-        },
-      ]
-    : [];
-
+  const [stockSymbol, setStockSymbol] = useState("AAPL");
   return (
-    <div>
-      <h1>Stock Price Data</h1>
-      <Plot data={plotData} layout={{ title: `Stock Price Of ${ticker}` }} />
-    </div>
+    <StockContext.Provider value={{ stockSymbol, setStockSymbol }}>
+      <Search />
+      <Dataplot />
+    </StockContext.Provider>
   );
 };
 
