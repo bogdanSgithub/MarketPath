@@ -2,10 +2,8 @@ from fastapi import FastAPI
 import pandas as pd
 import yfinance as yf
 import datetime as dt
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
 
 @app.get("/")
 async def root():
@@ -18,7 +16,7 @@ async def get_sp500():
     return tickers.to_list()
 
 @app.get("/historical_data")
-async def get_historical_data(stock: str, start: str = "2024-01-01", end: str = dt.datetime.now().strftime("%Y-%m-%d"), interval: str = '1d'):
+async def get_historical_data(stock: str, start: str = "2023-01-01", end: str = dt.datetime.now().strftime("%Y-%m-%d"), interval: str = '1d'):
     start_date = dt.datetime.strptime(start, "%Y-%m-%d")
     end_date = dt.datetime.strptime(end, "%Y-%m-%d")
     df = yf.download(stock, start=start_date, end=end_date, interval=interval)
