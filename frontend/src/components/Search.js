@@ -14,6 +14,11 @@ const Search = () => {
       .then((data) => setTickers(data));
   }, []);
 
+  const clear = () => {
+    setInput("");
+    setResults([]);
+  };
+
   const handleSearch = (e) => {
     const searchInput = e.target.value;
     setInput(searchInput);
@@ -37,6 +42,14 @@ const Search = () => {
         placeholder="Search stock..."
         className="w-full px-4 py-2 focus:outline-none rounded-md"
       />
+      {input && (
+        <button onClick={clear} className="m-1">
+          <XMarkIcon className="h-4 w-4 fill-gray-500" />
+        </button>
+      )}
+      <button className="h-8 w-8 bg-indigo-600 rounded-md flex justify-center items-center m-1 p-2">
+        <MagnifyingGlassIcon className="h-4 w-4 fill-gray-100" />
+      </button>
       {input && results.length > 0 ? (
         <SearchResults results={results} setResults={setResults} />
       ) : null}
