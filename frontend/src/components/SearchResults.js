@@ -8,7 +8,6 @@ const SearchResults = ({ results, setResults }) => {
       {results.map((item) => {
         return (
           <li
-            key={item}
             className="cursor-pointer p-4 m-2 flex items-center justify-between rounded-md hover:bg-indigo-200 transition duration-300"
             onClick={() => {
               setStockSymbol(item);
