@@ -9,7 +9,7 @@ const Search = () => {
 
   useEffect(() => {
     // Fetch the list of S&P 500 companies
-    fetch("/sp500")
+    fetch("/sp500_tickers")
       .then((response) => response.json())
       .then((data) => setTickers(data));
   }, []);

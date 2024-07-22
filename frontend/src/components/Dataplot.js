@@ -7,7 +7,7 @@ const Dataplot = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`/historical_data?stock=${stockSymbol}`)
+    fetch(`/historical_data/${stockSymbol}`)
       .then((response) => response.json())
       .then((data) => setData(data));
   }, [stockSymbol]);

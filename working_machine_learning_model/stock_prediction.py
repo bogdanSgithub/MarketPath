@@ -3,17 +3,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from utils import data_string_to_float, status_calc
 
-
 # The percentage by which a stock has to beat the S&P500 to be considered a 'buy'
 OUTPERFORMANCE = 10
-
 
 def build_data_set():
     """
     Reads the keystats.csv file and prepares it for scikit-learn
     :return: X_train and y_train numpy arrays
     """
-    #training_data = pd.read_csv("keystats.csv", index_col="Date")
     training_data = pd.read_csv("training_data.csv", index_col="Date")
 
     training_data.dropna(axis=0, how="any", inplace=True)
