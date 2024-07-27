@@ -78,5 +78,3 @@ def get_model():
     if os.path.exists(MODEL_PATH):
         return joblib.load(MODEL_PATH)
     return train_model()
-
-train_model()
