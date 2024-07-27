@@ -14,10 +14,11 @@ MODEL_PATH = "model.pkl"
 OUTPERFORMANCE = 10
 
 def prepare_data(df):
+    df = df.drop('Gross Profit', axis=1)
     df.dropna(axis=0, how="any", inplace=True)
 
     features = df.columns[5:]
-    #display(features)
+    print(features)
     #display(features.shape)
     x = df[features]
 
@@ -77,3 +78,5 @@ def get_model():
     if os.path.exists(MODEL_PATH):
         return joblib.load(MODEL_PATH)
     return train_model()
+
+train_model()
