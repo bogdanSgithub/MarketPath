@@ -1,3 +1,3 @@
-helper_functions/* linguist-vendored
-machine_learning_examples/* linguist-vendored
-model_tweaking/* linguist-vendored
+*.py linguist-detectable=true
+*.js linguist-detectable=true
+*.ipynb linguist-detectable=false
