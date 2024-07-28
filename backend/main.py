@@ -5,9 +5,17 @@ import pandas as pd
 import yfinance as yf
 import datetime as dt
 from train_model import get_model
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 PREDICTIONS_DATASET_PATH = "data/final_2024-07-23.csv"
 
