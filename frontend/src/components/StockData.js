@@ -27,7 +27,6 @@ const StockData = () => {
       return <p>No data available</p>;
     }
 
-    // Destructure the first object in the array
     data = data[0];
     const headers = Object.keys(data);
 
@@ -46,8 +45,8 @@ const StockData = () => {
               <td key={header}>
                 {typeof data[header] === "boolean"
                   ? data[header]
-                    ? "Yes"
-                    : "No"
+                    ? "Buy"
+                    : "Hold"
                   : data[header]}
               </td>
             ))}
