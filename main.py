@@ -32,7 +32,7 @@ model = joblib.load('model.pkl')
 tickers = df_pred['Ticker'].to_list()
 
 start_date = dt.datetime.strptime("2023-01-01", "%Y-%m-%d")
-end_date = dt.datetime.now().strftime("%Y-%m-%d")
+end_date = dt.datetime.now()
 
 def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.datetime.now().strftime("%Y-%m-%d"), interval: str = '1d'):
     start_date = dt.datetime.strptime(start, "%Y-%m-%d")
@@ -45,11 +45,13 @@ def product():
     st.write('#### Select a Stock Symbol')
     symbol = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='AAPL', options=tickers, index=None)
     
+    st.text('')
     if symbol is not None:
         # Get OHLC data
         df_stock_price = get_historical_price(symbol)
 
         # Display OHLC data
+        st.write(f"#### {symbol} Price Evolution {start_date.strftime('%Y-%m-%d')} - {end_date.strftime('%Y-%m-%d')}")
         fig = go.Figure()
         fig.add_trace(go.Candlestick(x=df_stock_price.index, open=df_stock_price['Open'], high=df_stock_price['High'], low=df_stock_price['Low'], close=df_stock_price['Close']) )
         fig.update_layout(height=800)
@@ -128,10 +130,19 @@ def product():
             st.dataframe(profitability_df, width=WIDTH)
         
         prediction = model.predict(df_stock_data.iloc[:, 1:])
+
+        date = dt.datetime.strptime(df_stock_data.index[0], "%Y-%m-%d")
+        date_1_year_later = date.replace(year=date.year + 1)
+        
         if prediction:
-            st.write("#### Model's Prediction: BUY")
+            st.markdown("# Model's Prediction: :green[BUY]")
+            st.write(f'##### The model predicts {symbol} to **OUTPERFORM** the market by 10% from {date.strftime("%Y-%m-%d")} until {date_1_year_later.strftime("%Y-%m-%d")}')
         else:
-            st.write("#### Model's Prediction: SELL")
+            st.markdown("# Model's Prediction: :red[SELL]")
+            st.write(f'##### The model predicts {symbol} to **NOT OUTPERFORM** the market by 10% from {date.strftime("%Y-%m-%d")} until {date_1_year_later.strftime("%Y-%m-%d")}')
+        
+        #st.write('### DISCLAMER')
+        #st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but #be mindful of the risks involved in stock market investing.')
     
 
 
