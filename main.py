@@ -24,9 +24,9 @@ selected = option_menu(
 
 st.title('Market Path')
 
-df_train = pd.read_csv('training.csv', index_col='Date')
-df_val = pd.read_csv('validation.csv', index_col='Date')
-df_pred = pd.read_csv('prediction.csv', index_col='Date')
+df_train = pd.read_csv('data/training.csv', index_col='Date')
+df_val = pd.read_csv('data/validation.csv', index_col='Date')
+df_pred = pd.read_csv('data/prediction.csv', index_col='Date')
 
 tickers = df_pred['Ticker'].to_list()
 
@@ -53,19 +53,77 @@ def product():
     fig.update_layout(height=800)
     st.plotly_chart(fig)
 
-    #with st.expander("See more"):
-    #    st.write(f'''
-    #        The chart above shows the historical price of {symbol} from {start_date} to {end_date}
-    #    ''')
-
     df_stock_data = df_pred[df_pred['Ticker'] == symbol]
-    # Number of columns per section
-    cols_per_section = 10
 
-    # Display DataFrame in chunks
-    for i in range(df_stock_data.shape, cols_per_section):
-        chunk = df_stock_data.iloc[:, i:i + cols_per_section]
-        st.write(chunk)
+    valuation_metrics = [
+    "Market Cap",
+    "Enterprise Value",
+    "Trailing P/E",
+    "Forward P/E",
+    "PEG Ratio",
+    "Price/Sales",
+    "Price/Book",
+    "Enterprise Value/Revenue",
+    "Enterprise Value/EBITDA"
+    ]
+
+    profitability_metrics = [
+        "Profit Margin",
+        "Operating Margin",
+        "Return on Assets",
+        "Return on Equity"
+    ]
+
+    financial_metrics = [
+        "Revenue",
+        "Revenue Per Share",
+        "EBITDA",
+        "Net Income Avl to Common",
+        "Diluted EPS",
+        "Total Cash",
+        "Total Cash Per Share",
+        "Total Debt",
+        "Total Debt/Equity",
+        "Current Ratio",
+        "Book Value Per Share"
+    ]
+
+    market_metrics = [
+        "Beta",
+        "50-Day Moving Average",
+        "200-Day Moving Average",
+        "Avg Vol (3 month)",
+        "Shares Outstanding"
+    ]
+
+    df_transposed = df_stock_data.transpose()
+
+    # Split the DataFrame into four parts based on your lists
+    valuation_df = df_transposed.loc[valuation_metrics]
+    profitability_df = df_transposed.loc[profitability_metrics]
+    financial_df = df_transposed.loc[financial_metrics]
+    market_df = df_transposed.loc[market_metrics]
+
+    # Streamlit layout with two columns
+    col1, col2 = st.columns(2)
+    WIDTH = 600
+    HEIGHT = 422
+
+    # Display the tables in Streamlit
+    with col1:
+        st.subheader("Valuation Metrics")
+        st.dataframe(valuation_df, width=WIDTH, height=HEIGHT)
+
+        st.subheader("Market Metrics")
+        st.dataframe(market_df, width=WIDTH)
+
+
+    with col2:
+        st.subheader("Financial Metrics")
+        st.dataframe(financial_df, width=WIDTH, height=HEIGHT)
+
+        st.subheader("Profitability Metrics")
+        st.dataframe(profitability_df, width=WIDTH)
 
 def roadmap():
     # Datasets
