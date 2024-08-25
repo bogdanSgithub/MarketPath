@@ -43,94 +43,95 @@ def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.da
 def product():
     # Get symbol
     st.write('#### Select a Stock Symbol')
-    symbol = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='AAPL', options=tickers)
+    symbol = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='AAPL', options=tickers, index=None)
     
-    # Get OHLC data
-    df_stock_price = get_historical_price(symbol)
+    if symbol is not None:
+        # Get OHLC data
+        df_stock_price = get_historical_price(symbol)
 
-    # Display OHLC data
-    fig = go.Figure()
-    fig.add_trace(go.Candlestick(x=df_stock_price.index, open=df_stock_price['Open'], high=df_stock_price['High'], low=df_stock_price['Low'], close=df_stock_price['Close']) )
-    fig.update_layout(height=800)
-    st.plotly_chart(fig)
+        # Display OHLC data
+        fig = go.Figure()
+        fig.add_trace(go.Candlestick(x=df_stock_price.index, open=df_stock_price['Open'], high=df_stock_price['High'], low=df_stock_price['Low'], close=df_stock_price['Close']) )
+        fig.update_layout(height=800)
+        st.plotly_chart(fig)
 
-    # Get Financial data
-    df_stock_data = df_pred[df_pred['Ticker'] == symbol]
+        # Get Financial data
+        df_stock_data = df_pred[df_pred['Ticker'] == symbol]
 
-    valuation_metrics = [
-    "Market Cap",
-    "Enterprise Value",
-    "Trailing P/E",
-    "Forward P/E",
-    "PEG Ratio",
-    "Price/Sales",
-    "Price/Book",
-    "Enterprise Value/Revenue",
-    "Enterprise Value/EBITDA"
-    ]
+        valuation_metrics = [
+        "Market Cap",
+        "Enterprise Value",
+        "Trailing P/E",
+        "Forward P/E",
+        "PEG Ratio",
+        "Price/Sales",
+        "Price/Book",
+        "Enterprise Value/Revenue",
+        "Enterprise Value/EBITDA"
+        ]
 
-    profitability_metrics = [
-        "Profit Margin",
-        "Operating Margin",
-        "Return on Assets",
-        "Return on Equity"
-    ]
+        profitability_metrics = [
+            "Profit Margin",
+            "Operating Margin",
+            "Return on Assets",
+            "Return on Equity"
+        ]
 
-    financial_metrics = [
-        "Revenue",
-        "Revenue Per Share",
-        "EBITDA",
-        "Net Income Avl to Common",
-        "Diluted EPS",
-        "Total Cash",
-        "Total Cash Per Share",
-        "Total Debt",
-        "Total Debt/Equity",
-        "Current Ratio",
-        "Book Value Per Share"
-    ]
+        financial_metrics = [
+            "Revenue",
+            "Revenue Per Share",
+            "EBITDA",
+            "Net Income Avl to Common",
+            "Diluted EPS",
+            "Total Cash",
+            "Total Cash Per Share",
+            "Total Debt",
+            "Total Debt/Equity",
+            "Current Ratio",
+            "Book Value Per Share"
+        ]
 
-    market_metrics = [
-        "Beta",
-        "50-Day Moving Average",
-        "200-Day Moving Average",
-        "Avg Vol (3 month)",
-        "Shares Outstanding"
-    ]
+        market_metrics = [
+            "Beta",
+            "50-Day Moving Average",
+            "200-Day Moving Average",
+            "Avg Vol (3 month)",
+            "Shares Outstanding"
+        ]
 
-    df_transposed = df_stock_data.transpose()
+        df_transposed = df_stock_data.transpose()
 
-    # Split the DataFrame into four parts based on your lists
-    valuation_df = df_transposed.loc[valuation_metrics]
-    profitability_df = df_transposed.loc[profitability_metrics]
-    financial_df = df_transposed.loc[financial_metrics]
-    market_df = df_transposed.loc[market_metrics]
+        # Split the DataFrame into four parts based on your lists
+        valuation_df = df_transposed.loc[valuation_metrics]
+        profitability_df = df_transposed.loc[profitability_metrics]
+        financial_df = df_transposed.loc[financial_metrics]
+        market_df = df_transposed.loc[market_metrics]
 
-    # Streamlit layout with two columns
-    col1, col2 = st.columns(2)
-    WIDTH = 600
-    HEIGHT = 422
+        # Streamlit layout with two columns
+        col1, col2 = st.columns(2)
+        WIDTH = 600
+        HEIGHT = 422
 
-    # Display the tables in Streamlit
-    with col1:
-        st.subheader("Valuation Metrics")
-        st.dataframe(valuation_df, width=WIDTH, height=HEIGHT)
+        # Display the tables in Streamlit
+        with col1:
+            st.subheader("Valuation Metrics")
+            st.dataframe(valuation_df, width=WIDTH, height=HEIGHT)
 
-        st.subheader("Market Metrics")
-        st.dataframe(market_df, width=WIDTH)
+            st.subheader("Market Metrics")
+            st.dataframe(market_df, width=WIDTH)
 
-    with col2:
-        st.subheader("Financial Metrics")
-        st.dataframe(financial_df, width=WIDTH, height=HEIGHT)
+        with col2:
+            st.subheader("Financial Metrics")
+            st.dataframe(financial_df, width=WIDTH, height=HEIGHT)
 
-        st.subheader("Profitability Metrics")
-        st.dataframe(profitability_df, width=WIDTH)
-    
-    prediction = model.predict(df_stock_data.iloc[:, 1:])
-    if prediction:
-        st.write("#### Model's Prediction: BUY")
-    else:
-        st.write("#### Model's Prediction: SELL")
+            st.subheader("Profitability Metrics")
+            st.dataframe(profitability_df, width=WIDTH)
+        
+        prediction = model.predict(df_stock_data.iloc[:, 1:])
+        if prediction:
+            st.write("#### Model's Prediction: BUY")
+        else:
+            st.write("#### Model's Prediction: SELL")
     
 
 
