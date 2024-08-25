@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import datetime as dt
 import yfinance as yf
+import joblib
 import plotly.graph_objects as go
 from streamlit_option_menu import option_menu
 
@@ -11,6 +12,7 @@ st.set_page_config(
     page_icon='🏛️',
     layout='centered'
 )
+st.title('Market Path')
 
 # Navigation
 selected = option_menu(
@@ -22,11 +24,10 @@ selected = option_menu(
     orientation='horizontal'
 )
 
-st.title('Market Path')
-
 df_train = pd.read_csv('data/training.csv', index_col='Date')
 df_val = pd.read_csv('data/validation.csv', index_col='Date')
 df_pred = pd.read_csv('data/prediction.csv', index_col='Date')
+model = joblib.load('model.pkl')
 
 tickers = df_pred['Ticker'].to_list()
 
@@ -44,15 +45,16 @@ def product():
     st.write('#### Select a Stock Symbol')
     symbol = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='AAPL', options=tickers)
     
-    # Get OHLC and display
+    # Get OHLC data
     df_stock_price = get_historical_price(symbol)
 
+    # Display OHLC data
     fig = go.Figure()
     fig.add_trace(go.Candlestick(x=df_stock_price.index, open=df_stock_price['Open'], high=df_stock_price['High'], low=df_stock_price['Low'], close=df_stock_price['Close']) )
-
     fig.update_layout(height=800)
     st.plotly_chart(fig)
 
+    # Get Financial data
     df_stock_data = df_pred[df_pred['Ticker'] == symbol]
 
     valuation_metrics = [
@@ -117,13 +119,20 @@ def product():
         st.subheader("Market Metrics")
         st.dataframe(market_df, width=WIDTH)
 
-
     with col2:
         st.subheader("Financial Metrics")
         st.dataframe(financial_df, width=WIDTH, height=HEIGHT)
 
         st.subheader("Profitability Metrics")
         st.dataframe(profitability_df, width=WIDTH)
+    
+    prediction = model.predict(df_stock_data.iloc[:, 1:])
+    if prediction:
+        st.write("#### Model's Prediction: BUY")
+    else:
+        st.write("#### Model's Prediction: SELL")
+    
+
 
 def roadmap():
     # Datasets
