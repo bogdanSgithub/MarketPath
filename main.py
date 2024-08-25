@@ -197,12 +197,12 @@ def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.da
 def product():
     # Get symbol
     st.write('#### Select a Stock Symbol')
-    company_name = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='Apple', options=company_names, index=None)
+    symbol = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='AAPL', options=tickers, index=None)
     
     st.write("")
     st.write("")
-    if company_name is not None:
-        symbol = tickers[company_names.index(company_name)]
+    if symbol is not None:
+        company_name = company_names[tickers.index(symbol)]
         # Get OHLC data
         df_stock_price = get_historical_price(symbol)
 
