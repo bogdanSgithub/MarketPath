@@ -135,8 +135,6 @@ def Forecast():
             st.dataframe(profitability_df, width=WIDTH)
         
         prediction = model.predict(df_stock_data.iloc[:, 2:])
-
-
         
         if prediction:
             st.markdown("# Model's Prediction: :green[BUY]")
@@ -161,12 +159,49 @@ def Watchlist():
     st.dataframe(df_winners, width=800, height=878)
 
 def Roadmap():
+    # Project Overview
+    st.subheader("Project Overview 🚀")
+    st.write("""
+    Navigating the stock market can be both exciting and daunting. With its potential for significant financial gain comes the risk, especially for those who are new to investing. **MarketPath** aims to simplify this journey, making the stock market more accessible and less intimidating for beginners. By providing intuitive insights and predictions, we help users make informed investment decisions with confidence.
+    """)
+
+    # Problem Identification
+    st.subheader("Problem Identification 🔍")
+    st.write("**Objective:**")
+    st.write("""
+    The goal is to develop a model that predicts which S&P 500 stocks will outperform the market over the next 12 months. Leveraging advanced machine learning techniques, the model provides actionable insights to guide investment strategies.
+    """)
+
+    st.write("**Why It Matters:**")
+    st.write("""
+    Discovering stocks poised to beat the market can significantly enhance investment decisions, leading to potential financial growth and a more secure financial future.
+    """)
+
+    # Target Audience
+    st.subheader("Target Audience 🎯")
+    st.write("""
+    The tool is designed for both novice and seasoned investors. It provides valuable data-driven predictions on which S&P 500 stocks are likely to outperform the market, helping users refine their investment strategies.
+    """)
+
+    # Scope and Constraints
+    st.subheader("Scope and Constraints 📊")
+    st.write("""
+    The AI tool will analyze financial data from S&P 500 stocks to forecast which ones may exceed the market's performance by 10% over the next year.
+    """)
+    st.write('### DISCLAMER')
+    st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.')
+
+
     # Datasets
-    st.write('## Datasets')
-    st.write('#### Training/Testing Dataset (2003-2013)')
+    st.subheader("Datasets 📁")
+    st.write(f"""
+    Three datasets are used:
+    - **Training/Testing:** 2003-2013 from [Python Programming](https://pythonprogramming.net/data-acquisition-machine-learning/)""")
     st.write(df_train)
-    st.write('#### Validation Dataset (2017-2018)')
+    st.write(f'- **Testing:** 2017-2018 from the same source')
     st.write(df_val)
+    st.write('- **Prediction:** 2024 from [Yahoo Finance](https://ca.finance.yahoo.com/quote/NVDA/)')
+    st.write(df_pred)
 
 if selected == 'Forecast':
     Forecast()
@@ -175,4 +210,4 @@ elif selected == 'Watchlist':
 else:
     Roadmap()
 
-# run: streamlit run main.py --theme.base="dark" -- theme.primaryColor="#228b22"
+# run: streamlit run main.py --theme.base="dark" --theme.primaryColor="#228b22"
