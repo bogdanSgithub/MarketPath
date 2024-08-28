@@ -17,8 +17,8 @@ st.title('Market Path')
 # Navigation
 selected = option_menu(
     menu_title=None,
-    options=['Product', 'Roadmap', 'Something else'],
-    icons = ['bar-chart-line', 'map', 'map'],
+    options=['Forecast', 'Watchlist', 'Roadmap'],
+    icons = ['bar-chart-line', 'card-checklist', 'map'],
     menu_icon='cast',
     default_index=0,
     orientation='horizontal'
@@ -194,7 +194,7 @@ def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.da
     df = yf.download(stock, start=start_date, end=end_date, interval=interval)
     return df
 
-def product():
+def Forecast():
     # Get symbol
     st.write('#### Select a Stock Symbol')
     symbol = st.selectbox(label='Select a Stock Symbol', label_visibility='collapsed', placeholder='AAPL', options=tickers, index=None)
@@ -300,9 +300,19 @@ def product():
         #st.write('### DISCLAMER')
         #st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but #be mindful of the risks involved in stock market investing.')
     
+def Watchlist():
+    X = df_pred.iloc[:, 1:]
+    predictions = model.predict(X)
 
+    preds = pd.Series(predictions, name='Predictions')
+    #X_original = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)
+    merged = pd.concat([df_pred.reset_index(drop=True), preds.reset_index(drop=True)], axis=1)
 
-def roadmap():
+    stock_symbols = merged[merged['Predictions'] == True]['Ticker'].to_list()
+
+    st.write(stock_symbols)
+
+def Roadmap():
     # Datasets
     st.write('## Datasets')
     st.write('#### Training/Testing Dataset (2003-2013)')
@@ -310,11 +320,11 @@ def roadmap():
     st.write('#### Validation Dataset (2017-2018)')
     st.write(df_val)
 
-if selected == 'Product':
-    product()
-elif selected == 'Roadmap':
-    roadmap()
+if selected == 'Forecast':
+    Forecast()
+elif selected == 'Watchlist':
+    Watchlist()
 else:
-    pass
+    Roadmap()
 
 # run: streamlit run main.py --theme.base="dark" -- theme.primaryColor="#228b22"
