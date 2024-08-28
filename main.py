@@ -155,7 +155,7 @@ def Watchlist():
 
     df_winners = merged[merged['Predictions'] == True].set_index('Ticker')
     st.write("### Model's Watchlist: Stocks Predicted to Beat the Market")
-    st.write(f"##### From {pred_start_date} Until {pred_end_date}")
+    st.write(f'##### From {pred_start_date.strftime("%Y-%m-%d")} Until {pred_end_date.strftime("%Y-%m-%d")}')
     st.dataframe(df_winners, width=800, height=878)
 
 def Roadmap():
@@ -191,7 +191,6 @@ def Roadmap():
     st.write('### DISCLAMER')
     st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.')
 
-
     # Datasets
     st.subheader("Datasets 📁")
     st.write(f"""
@@ -202,6 +201,49 @@ def Roadmap():
     st.write(df_val)
     st.write('- **Prediction:** 2024 from [Yahoo Finance](https://ca.finance.yahoo.com/quote/NVDA/)')
     st.write(df_pred)
+
+    # Data Collection and Exploration
+    st.subheader("Data Collection and Exploration 🔎")
+    st.write("""
+    - Searched the web and scraped data to gather financial information.
+    - Iteratively refined features to enhance model performance.
+    - Removed features with high percentages of missing values (NaN).
+    - Conducted exploratory data analysis to understand data patterns and distributions.
+    """)
+
+    # Model Selection and Training 🔧
+    st.subheader("Model Selection and Training 🔧")
+    st.write("""
+    **Models Tested:** Logistic Regression, K-Nearest Neighbors (KNN), Decision Tree Classifier, Random Forest Classifier.
+
+    **Training Process:** 
+    - Handled NaN values, converted features to integers, and performed feature engineering to optimize the model. 
+    - Split the initial dataset (2003-2013) into 80% training and 20% testing, while using subsequent datasets (2017-2018 and 2024) for further testing and predictions.
+
+    **Evaluation Metrics:** 
+    - Used confusion matrix and compared the average percent change of predicted stocks to the market over 12 months.
+
+    **Success Criteria:** 
+    - Stocks predicted to beat the market should indeed outperform it.
+
+    **Results:** 
+    - The Random Forest Classifier proved to be the most accurate model.
+    """)
+
+    # Ethical Considerations
+    st.subheader("Ethical Considerations 🤝")
+    st.write("""
+    - **Transparency:** Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.
+    - **Data Privacy:** Data used was open source and free to use.
+    """)
+
+    # Future Steps
+    st.subheader("Future Steps 🚀")
+    st.write("""
+    - **Enhance Feature Engineering:** Refine feature selection and transformation to boost model accuracy.
+    - **Update Data:** Collect and integrate data from more recent years to keep predictions relevant and accurate.
+    """)
+
 
 if selected == 'Forecast':
     Forecast()
