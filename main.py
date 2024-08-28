@@ -305,12 +305,12 @@ def Watchlist():
     predictions = model.predict(X)
 
     preds = pd.Series(predictions, name='Predictions')
-    #X_original = pd.DataFrame(scaler.inverse_transform(X), columns=X.columns)
     merged = pd.concat([df_pred.reset_index(drop=True), preds.reset_index(drop=True)], axis=1)
 
-    stock_symbols = merged[merged['Predictions'] == True]['Ticker'].to_list()
-
-    st.write(stock_symbols)
+    df_winners = merged[merged['Predictions'] == True].set_index('Ticker')
+    st.write("### Model's Watchlist: Stocks Predicted to Beat the Market")
+    st.write("##### From 2024-07-23 Until 2025-07-23")
+    st.dataframe(df_winners, width=800, height=912)
 
 def Roadmap():
     # Datasets
