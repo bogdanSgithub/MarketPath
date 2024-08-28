@@ -24,6 +24,7 @@ selected = option_menu(
     orientation='horizontal'
 )
 
+# dataframes and model
 df_train = pd.read_csv('data/training.csv', index_col='Date')
 df_val = pd.read_csv('data/validation.csv', index_col='Date')
 df_pred = pd.read_csv('data/prediction.csv', index_col='Date')
@@ -33,6 +34,8 @@ tickers = df_pred['Ticker'].to_list()
 
 start_date = dt.datetime.strptime("2023-01-01", "%Y-%m-%d")
 end_date = dt.datetime.now()
+pred_start_date = dt.datetime.strptime(df_pred.index[0], "%Y-%m-%d")
+pred_end_date = pred_start_date.replace(year=pred_start_date.year + 1)
 
 def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.datetime.now().strftime("%Y-%m-%d"), interval: str = '1d'):
     start_date = dt.datetime.strptime(start, "%Y-%m-%d")
@@ -133,15 +136,14 @@ def Forecast():
         
         prediction = model.predict(df_stock_data.iloc[:, 2:])
 
-        date = dt.datetime.strptime(df_stock_data.index[0], "%Y-%m-%d")
-        date_1_year_later = date.replace(year=date.year + 1)
+
         
         if prediction:
             st.markdown("# Model's Prediction: :green[BUY]")
-            st.write(f'##### The model predicts {symbol} to **OUTPERFORM** the market by 10% from {date.strftime("%Y-%m-%d")} until {date_1_year_later.strftime("%Y-%m-%d")}')
+            st.write(f'##### The model predicts {symbol} to **OUTPERFORM** the market by 10% from {pred_start_date.strftime("%Y-%m-%d")} until {pred_end_date.strftime("%Y-%m-%d")}')
         else:
             st.markdown("# Model's Prediction: :red[SELL]")
-            st.write(f'##### The model predicts {symbol} to **NOT OUTPERFORM** the market by 10% from {date.strftime("%Y-%m-%d")} until {date_1_year_later.strftime("%Y-%m-%d")}')
+            st.write(f'##### The model predicts {symbol} to **NOT OUTPERFORM** the market by 10% from {pred_start_date.strftime("%Y-%m-%d")} until {pred_end_date.strftime("%Y-%m-%d")}')
         
         #st.write('### DISCLAMER')
         #st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but #be mindful of the risks involved in stock market investing.')
@@ -155,8 +157,8 @@ def Watchlist():
 
     df_winners = merged[merged['Predictions'] == True].set_index('Ticker')
     st.write("### Model's Watchlist: Stocks Predicted to Beat the Market")
-    st.write("##### From 2024-07-23 Until 2025-07-23")
-    st.dataframe(df_winners, width=800, height=912)
+    st.write(f"##### From {pred_start_date} Until {pred_end_date}")
+    st.dataframe(df_winners, width=800, height=878)
 
 def Roadmap():
     # Datasets
