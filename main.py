@@ -142,9 +142,6 @@ def Forecast():
         else:
             st.markdown("# Model's Prediction: :red[SELL]")
             st.write(f'##### The model predicts {symbol} to **NOT OUTPERFORM** the market by 10% from {pred_start_date.strftime("%Y-%m-%d")} until {pred_end_date.strftime("%Y-%m-%d")}')
-        
-        #st.write('### DISCLAMER')
-        #st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but #be mindful of the risks involved in stock market investing.')
     
 def Watchlist():
     X = df_pred.iloc[:, 2:]
