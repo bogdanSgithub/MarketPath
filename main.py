@@ -256,10 +256,11 @@ background-color: transparent;
 text-decoration: underline;
 }
 
-a:hover,  a:active {
-color: red;
-background-color: transparent;
-text-decoration: underline;
+a:hover, a:active {
+    color: #FF4500;
+    background-color: transparent;
+    text-decoration: none;
+    border-bottom: 1px solid #FF4500;
 }
 
 .footer {
@@ -267,8 +268,8 @@ position: fixed;
 left: 0;
 bottom: 0;
 width: 100%;
-background-color: white;
-color: black;
+background-color: #0E1117;
+color: #FAFAFA;
 text-align: center;
 }
 </style>
