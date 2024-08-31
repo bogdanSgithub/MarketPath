@@ -251,9 +251,8 @@ else:
 
 footer="""<style>
 a:link , a:visited{
-color: blue;
+color: #228b22;
 background-color: transparent;
-text-decoration: underline;
 }
 
 a:hover, a:active {
