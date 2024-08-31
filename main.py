@@ -251,15 +251,14 @@ else:
 
 footer="""<style>
 a:link , a:visited{
-color: #228b22;
+color: #FAFAFA;
 background-color: transparent;
 }
 
 a:hover, a:active {
-    color: #FF4500;
+    color: #228b22;
     background-color: transparent;
     text-decoration: none;
-    border-bottom: 1px solid #FF4500;
 }
 
 .footer {
