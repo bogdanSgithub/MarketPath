@@ -40,7 +40,7 @@ pred_end_date = pred_start_date.replace(year=pred_start_date.year + 1)
 def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.datetime.now().strftime("%Y-%m-%d"), interval: str = '1d'):
     start_date = dt.datetime.strptime(start, "%Y-%m-%d")
     end_date = dt.datetime.strptime(end, "%Y-%m-%d")
-    df = yf.download(stock, start=start_date, end=end_date, interval=interval)
+    df = yf.download(stock, start=start_date, end=end_date, interval=interval, progress=False)
     return df
 
 def Forecast():
@@ -273,7 +273,7 @@ text-align: center;
 }
 </style>
 <div class="footer">
-<p>Developed with ❤ by <a style='display: block; text-align: center;' href="https://github.com/bogdanSgithub" target="_blank">Bogdan Andrei Feher S</a></p>
+<p>Developed with ❤ by <a style='display: block; text-align: center;' href="https://github.com/bogdanSgithub" target="_blank">Bogdan Andrei Feher</a></p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
