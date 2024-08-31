@@ -9,7 +9,7 @@ from streamlit_option_menu import option_menu
 # Page Config
 st.set_page_config(
     page_title='MarketPath',
-    page_icon='🏛️',
+    page_icon='ðŸ�›ï¸�',
     layout='centered'
 )
 st.title('Market Path')
@@ -40,7 +40,7 @@ pred_end_date = pred_start_date.replace(year=pred_start_date.year + 1)
 def get_historical_price(stock: str, start: str = "2023-01-01", end: str = dt.datetime.now().strftime("%Y-%m-%d"), interval: str = '1d'):
     start_date = dt.datetime.strptime(start, "%Y-%m-%d")
     end_date = dt.datetime.strptime(end, "%Y-%m-%d")
-    df = yf.download(stock, start=start_date, end=end_date, interval=interval)
+    df = yf.download(stock, start=start_date, end=end_date, interval=interval, progress=False)
     return df
 
 def Forecast():
@@ -62,7 +62,7 @@ def Forecast():
         st.write(f"### {company_name} Stock Price Evolution {start_date.strftime('%Y-%m-%d')} - {end_date.strftime('%Y-%m-%d')}")
         fig = go.Figure()
         fig.add_trace(go.Candlestick(x=df_stock_price.index, open=df_stock_price['Open'], high=df_stock_price['High'], low=df_stock_price['Low'], close=df_stock_price['Close']) )
-        fig.update_layout(height=800)
+        fig.update_layout(height=800, xaxis_rangeslider_visible=False)
         st.plotly_chart(fig)
 
         valuation_metrics = [
@@ -157,13 +157,13 @@ def Watchlist():
 
 def Roadmap():
     # Project Overview
-    st.subheader("Project Overview 🚀")
+    st.subheader("Project Overview ðŸš€")
     st.write("""
     Navigating the stock market can be both exciting and daunting. With its potential for significant financial gain comes the risk, especially for those who are new to investing. **MarketPath** aims to simplify this journey, making the stock market more accessible and less intimidating for beginners. By providing intuitive insights and predictions, we help users make informed investment decisions with confidence.
     """)
 
     # Problem Identification
-    st.subheader("Problem Identification 🔍")
+    st.subheader("Problem Identification ðŸ”�")
     st.write("**Objective:**")
     st.write("""
     The goal is to develop a model that predicts which S&P 500 stocks will outperform the market over the next 12 months. Leveraging advanced machine learning techniques, the model provides actionable insights to guide investment strategies.
@@ -175,13 +175,13 @@ def Roadmap():
     """)
 
     # Target Audience
-    st.subheader("Target Audience 🎯")
+    st.subheader("Target Audience ðŸŽ¯")
     st.write("""
     The tool is designed for both novice and seasoned investors. It provides valuable data-driven predictions on which S&P 500 stocks are likely to outperform the market, helping users refine their investment strategies.
     """)
 
     # Scope and Constraints
-    st.subheader("Scope and Constraints 📊")
+    st.subheader("Scope and Constraints ðŸ“Š")
     st.write("""
     The AI tool will analyze financial data from S&P 500 stocks to forecast which ones may exceed the market's performance by 10% over the next year.
     """)
@@ -189,7 +189,7 @@ def Roadmap():
     st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.')
 
     # Datasets
-    st.subheader("Datasets 📁")
+    st.subheader("Datasets ðŸ“�")
     st.write(f"""
     Three datasets are used:
     - **Training/Testing:** 2003-2013 from [Python Programming](https://pythonprogramming.net/data-acquisition-machine-learning/)""")
@@ -200,7 +200,7 @@ def Roadmap():
     st.write(df_pred)
 
     # Data Collection and Exploration
-    st.subheader("Data Collection and Exploration 🔎")
+    st.subheader("Data Collection and Exploration ðŸ”Ž")
     st.write("""
     - Searched the web and scraped data to gather financial information.
     - Iteratively refined features to enhance model performance.
@@ -208,8 +208,8 @@ def Roadmap():
     - Conducted exploratory data analysis to understand data patterns and distributions.
     """)
 
-    # Model Selection and Training 🔧
-    st.subheader("Model Selection and Training 🔧")
+    # Model Selection and Training ðŸ”§
+    st.subheader("Model Selection and Training ðŸ”§")
     st.write("""
     **Models Tested:** Logistic Regression, K-Nearest Neighbors (KNN), Decision Tree Classifier, Random Forest Classifier.
 
@@ -228,14 +228,14 @@ def Roadmap():
     """)
 
     # Ethical Considerations
-    st.subheader("Ethical Considerations 🤝")
+    st.subheader("Ethical Considerations ðŸ¤�")
     st.write("""
     - **Transparency:** Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.
     - **Data Privacy:** Data used was open source and free to use.
     """)
 
     # Future Steps
-    st.subheader("Future Steps 🚀")
+    st.subheader("Future Steps ðŸš€")
     st.write("""
     - **Enhance Feature Engineering:** Refine feature selection and transformation to boost model accuracy.
     - **Update Data:** Collect and integrate data from more recent years to keep predictions relevant and accurate.
@@ -248,5 +248,33 @@ elif selected == 'Watchlist':
     Watchlist()
 else:
     Roadmap()
+
+footer="""<style>
+a:link , a:visited{
+color: #FAFAFA;
+background-color: transparent;
+}
+
+a:hover, a:active {
+    color: #228b22;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: #0E1117;
+color: #FAFAFA;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed by <a style='display: block; text-align: center;' href="https://github.com/bogdanSgithub" target="_blank">Bogdan Andrei Feher</a></p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)
 
 # run: streamlit run main.py --theme.base="dark" --theme.primaryColor="#228b22"
