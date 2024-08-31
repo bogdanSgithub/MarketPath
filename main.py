@@ -157,13 +157,13 @@ def Watchlist():
 
 def Roadmap():
     # Project Overview
-    st.subheader("Project Overview ðŸš€")
+    st.subheader("Project Overview 🚀")
     st.write("""
     Navigating the stock market can be both exciting and daunting. With its potential for significant financial gain comes the risk, especially for those who are new to investing. **MarketPath** aims to simplify this journey, making the stock market more accessible and less intimidating for beginners. By providing intuitive insights and predictions, we help users make informed investment decisions with confidence.
     """)
 
     # Problem Identification
-    st.subheader("Problem Identification ðŸ”�")
+    st.subheader("Problem Identification 🔍")
     st.write("**Objective:**")
     st.write("""
     The goal is to develop a model that predicts which S&P 500 stocks will outperform the market over the next 12 months. Leveraging advanced machine learning techniques, the model provides actionable insights to guide investment strategies.
@@ -175,13 +175,13 @@ def Roadmap():
     """)
 
     # Target Audience
-    st.subheader("Target Audience ðŸŽ¯")
+    st.subheader("Target Audience 🎯")
     st.write("""
     The tool is designed for both novice and seasoned investors. It provides valuable data-driven predictions on which S&P 500 stocks are likely to outperform the market, helping users refine their investment strategies.
     """)
 
     # Scope and Constraints
-    st.subheader("Scope and Constraints ðŸ“Š")
+    st.subheader("Scope and Constraints 📊")
     st.write("""
     The AI tool will analyze financial data from S&P 500 stocks to forecast which ones may exceed the market's performance by 10% over the next year.
     """)
@@ -189,7 +189,7 @@ def Roadmap():
     st.write('##### Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.')
 
     # Datasets
-    st.subheader("Datasets ðŸ“�")
+    st.subheader("Datasets 📁")
     st.write(f"""
     Three datasets are used:
     - **Training/Testing:** 2003-2013 from [Python Programming](https://pythonprogramming.net/data-acquisition-machine-learning/)""")
@@ -200,7 +200,7 @@ def Roadmap():
     st.write(df_pred)
 
     # Data Collection and Exploration
-    st.subheader("Data Collection and Exploration ðŸ”Ž")
+    st.subheader("Data Collection and Exploration 🔎")
     st.write("""
     - Searched the web and scraped data to gather financial information.
     - Iteratively refined features to enhance model performance.
@@ -209,7 +209,7 @@ def Roadmap():
     """)
 
     # Model Selection and Training ðŸ”§
-    st.subheader("Model Selection and Training ðŸ”§")
+    st.subheader("Model Selection and Training 🔧")
     st.write("""
     **Models Tested:** Logistic Regression, K-Nearest Neighbors (KNN), Decision Tree Classifier, Random Forest Classifier.
 
@@ -228,14 +228,14 @@ def Roadmap():
     """)
 
     # Ethical Considerations
-    st.subheader("Ethical Considerations ðŸ¤�")
+    st.subheader("Ethical Considerations 🤝")
     st.write("""
     - **Transparency:** Past performance does not guarantee future results. Use MarketPath AI to enhance your investment strategy, but be mindful of the risks involved in stock market investing.
     - **Data Privacy:** Data used was open source and free to use.
     """)
 
     # Future Steps
-    st.subheader("Future Steps ðŸš€")
+    st.subheader("Future Steps 🚀")
     st.write("""
     - **Enhance Feature Engineering:** Refine feature selection and transformation to boost model accuracy.
     - **Update Data:** Collect and integrate data from more recent years to keep predictions relevant and accurate.
