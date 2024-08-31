@@ -1,3 +1,5 @@
+web app: https://marketpath.streamlit.app/
+
 ## Project Overview 🚀
 Navigating the stock market can be both exciting and daunting. With its potential for significant financial gain comes the risk, especially for those who are new to investing. **MarketPath** aims to simplify this journey, making the stock market more accessible and less intimidating for beginners. By providing intuitive insights and predictions, MarketPath helps users make informed investment decisions with confidence.
 
