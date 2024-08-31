@@ -9,7 +9,7 @@ from streamlit_option_menu import option_menu
 # Page Config
 st.set_page_config(
     page_title='MarketPath',
-    page_icon='ðŸ�›ï¸�',
+    page_icon='🏛️',
     layout='centered'
 )
 st.title('Market Path')
@@ -140,7 +140,7 @@ def Forecast():
             st.markdown("# Model's Prediction: :green[BUY]")
             st.write(f'##### The model predicts {symbol} to **OUTPERFORM** the market by 10% from {pred_start_date.strftime("%Y-%m-%d")} until {pred_end_date.strftime("%Y-%m-%d")}')
         else:
-            st.markdown("# Model's Prediction: :red[SELL]")
+            st.markdown("# Model's Prediction: :red[HOLD]")
             st.write(f'##### The model predicts {symbol} to **NOT OUTPERFORM** the market by 10% from {pred_start_date.strftime("%Y-%m-%d")} until {pred_end_date.strftime("%Y-%m-%d")}')
     
 def Watchlist():
