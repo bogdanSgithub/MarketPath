@@ -192,46 +192,43 @@ def Watchlist():
 
     portfolio_data = []
 
-    # Loop over each stock and fetch historical prices, then calculate the returns and percentage changes
     for stock in winners.index:
-        print(stock)
-        st.write(stock)
         df_stock = get_historical_price(stock, pred_start_date.strftime("%Y-%m-%d"), last_weekday.strftime("%Y-%m-%d"))
 
-        # Calculate the return and percentage return
         stock_return = df_stock['Close'].iloc[-1] - df_stock['Close'].iloc[0]
         stock_pct_return = ((df_stock['Close'].iloc[-1] - df_stock['Close'].iloc[0]) / df_stock['Close'].iloc[0]) * 100
 
-        # Add the data to the portfolio_data list
         portfolio_data.append({
             'Stock': stock,
             'Return ($)': stock_return,
-            'Percentage Return (%)': stock_pct_return
+            'Percentage Return (%)': stock_pct_return,
+            'Historical Data': df_stock
         })
 
-        # Plot the stock's historical price using Plotly
-        fig = go.Figure()
-        fig.add_trace(go.Candlestick(
-            x=df_stock.index, open=df_stock['Open'], high=df_stock['High'],
-            low=df_stock['Low'], close=df_stock['Close']
-        ))
-
-        title = f"{stock} Historical Price Returns: {stock_pct_return:.2f}% (${stock_return:.2f})"
-        fig.update_layout(height=800, xaxis_rangeslider_visible=False, title=title)
-        st.plotly_chart(fig)
-
-    # Create a DataFrame from the portfolio_data list
     portfolio_df = pd.DataFrame(portfolio_data)
 
-    # Calculate the portfolio's average return and percentage return
-    portfolio_return = portfolio_df['Return ($)'].sum()
-    portfolio_pct_return = (portfolio_return / portfolio_df['Return ($)'].count()) / df_spy_price['Close'].iloc[0] * 100
+    portfolio_pct_return = portfolio_df['Percentage Return (%)'].mean()
 
-    # Display the portfolio DataFrame with the individual stock returns and portfolio data
-    st.write(portfolio_df)
-    st.write(f"Portfolio Total Return: ${portfolio_return:.2f}")
-    st.write(f"Portfolio Average Percentage Return: {portfolio_pct_return:.2f}%")
+    st.write(portfolio_df[['Stock', 'Return ($)', 'Percentage Return (%)']])
+    st.write(f"Portfolio Return: {portfolio_pct_return:.2f}%")
 
+    selected_stock = st.selectbox("Select a stock to view its chart", portfolio_df['Stock'])
+
+    selected_stock_data = portfolio_df.loc[portfolio_df['Stock'] == selected_stock, 'Historical Data'].values[0]
+
+    fig = go.Figure()
+    fig.add_trace(go.Candlestick(
+        x=selected_stock_data.index, open=selected_stock_data['Open'], high=selected_stock_data['High'],
+        low=selected_stock_data['Low'], close=selected_stock_data['Close']
+    ))
+
+    stock_return = selected_stock_data['Close'].iloc[-1] - selected_stock_data['Close'].iloc[0]
+    stock_pct_return = ((selected_stock_data['Close'].iloc[-1] - selected_stock_data['Close'].iloc[0]) /
+                        selected_stock_data['Close'].iloc[0]) * 100
+
+    title = f"{selected_stock} Historical Price Returns: {stock_pct_return:.2f}% (${stock_return:.2f})"
+    fig.update_layout(height=800, xaxis_rangeslider_visible=False, title=title)
+    st.plotly_chart(fig)
 
 
 def Roadmap():
